@@ -2,8 +2,8 @@
 
 ### Create Database
 
-### Create Relation
+### Create Table
 
-### Create ENV config file
+### Create ENV
 
-### Write Code
+### Write Go
