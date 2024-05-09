@@ -12,6 +12,7 @@ import (
 	"github.com/TomiwaAribisala-git/gogres/models"
 	"github.com/gorilla/mux"
 	"github.com/joho/godotenv"
+	_ "github.com/lib/pq"
 )
 
 type Response struct {
@@ -230,7 +231,7 @@ func deleteStock(id int64) int64 {
 	db := CreateConnection()
 	defer db.Close()
 
-	sqlStatement := `DELETE FROM stocks WHERE stocksid=$1`
+	sqlStatement := `DELETE FROM stocks WHERE stockid=$1`
 	res, err := db.Exec(sqlStatement, id)
 	if err != nil {
 		log.Fatalf("Unable to execute the query. %v", err)
