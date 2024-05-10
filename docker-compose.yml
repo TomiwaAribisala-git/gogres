@@ -1,0 +1,35 @@
+version: "3"
+
+services:
+ db:
+  image: postgres:12.2-alpine
+  container_name: "stocks-database"
+  ports:
+   - "5432:5432"
+  environment:
+   - POSTGRES_DB=postgres
+   - POSTGRES_USER=postgres
+   - POSTGRES_PASSWORD=postgres
+  networks:
+   - stockstack
+  volumes:
+    - pgdata:/var/lib/postgresql/data
+ web:
+  build: .
+  container_name: "stock-api"
+  environment:
+   ### Ignore .env file"
+   DATABASE_URL: "host=stocks-database user=postgres password=postgres dbname=postgres sslmode=disable"
+  ports:
+   - "8080:8080"
+  depends_on:
+   - db
+  networks:
+   - stockstack
+
+volumes:
+  pgdata:
+
+networks:
+  stockstack:
+   driver: bridge
