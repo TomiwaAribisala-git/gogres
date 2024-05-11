@@ -21,6 +21,7 @@ type Response struct {
 }
 
 func CreateConnection() *sql.DB {
+	// Ignore .env file and Gotdotenv package for docker use case
 	err := godotenv.Load(".env")
 
 	if err != nil {
