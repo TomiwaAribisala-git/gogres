@@ -1,18 +1,22 @@
-FROM golang:1.16.3-alpine3.13 AS builder
+FROM golang:latest as builder
 
 WORKDIR /app
 
+COPY ./go.mod .
+
+RUN go mod download
+
 COPY . .
 
-RUN go get -d -v ./...
-
-RUN go build -o stock-api .
+RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o stock-api
 
 
-FROM apline:latest AS production
+FROM alpine
 
-COPY --from=builder /app .
+RUN apk add --no-cache ca-certificates
+
+COPY --from=builder /app/stock-api /stock-api
 
 EXPOSE 8080
 
-CMD ["./stock-api"]
+ENTRYPOINT ["/stock-api"]
